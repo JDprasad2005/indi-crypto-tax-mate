@@ -1,9 +1,10 @@
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Download, FileText } from 'lucide-react';
+import { Download, FileText, FileSpreadsheet } from 'lucide-react';
 import { CryptoTransaction, TaxSummary } from '@/types/transaction';
 import { formatCurrency } from '@/utils/taxCalculations';
 import { jsPDF } from 'jspdf';
+import * as XLSX from 'xlsx';
 import { useToast } from '@/hooks/use-toast';
 
 interface ReportGeneratorProps {
@@ -101,6 +102,68 @@ export const ReportGenerator = ({ transactions, summary }: ReportGeneratorProps)
     }
   };
 
+  const generateExcel = () => {
+    try {
+      // Create workbook
+      const wb = XLSX.utils.book_new();
+
+      // Tax Summary Sheet
+      const summaryData = [
+        ['Crypto Tax Report - Schedule VDA'],
+        ['Generated as per Indian Income Tax Act, 1961'],
+        [`Report Date: ${new Date().toLocaleDateString('en-IN')}`],
+        [],
+        ['Tax Summary'],
+        ['Total Gains (Profits)', formatCurrency(summary.totalGains)],
+        ['Total Losses', formatCurrency(summary.totalLosses)],
+        ['Net Taxable Gains', formatCurrency(summary.netGains)],
+        ['Tax @ 30% (Section 115BBH)', formatCurrency(summary.taxAt30Percent)],
+        ['TDS Deducted @ 1% (Section 194S)', formatCurrency(summary.totalTdsDeducted)],
+        ['GST on Platform Fees @ 18%', formatCurrency(summary.totalGstOnFees)],
+        ['Total Tax Liability', formatCurrency(summary.totalTaxLiability)],
+        ['Net Tax Payable (after TDS credit)', formatCurrency(summary.netTaxPayable)],
+        [],
+        ['Transaction Summary'],
+        ['Total Transactions', transactions.length],
+        ['BUY Transactions', transactions.filter(t => t.type === 'BUY').length],
+        ['SELL Transactions', transactions.filter(t => t.type === 'SELL').length],
+      ];
+      const wsSummary = XLSX.utils.aoa_to_sheet(summaryData);
+      XLSX.utils.book_append_sheet(wb, wsSummary, 'Tax Summary');
+
+      // Transactions Sheet
+      const transactionData = [
+        ['Date', 'Type', 'Cryptocurrency', 'Amount', 'Price per Unit', 'Total Value', 'Platform Fee', 'TDS Deducted'],
+        ...transactions.map(t => [
+          new Date(t.date).toLocaleDateString('en-IN'),
+          t.type,
+          t.cryptocurrency,
+          t.amount,
+          formatCurrency(t.pricePerUnit),
+          formatCurrency(t.totalValue),
+          formatCurrency(t.platformFee),
+          formatCurrency(t.tdsDeducted),
+        ])
+      ];
+      const wsTransactions = XLSX.utils.aoa_to_sheet(transactionData);
+      XLSX.utils.book_append_sheet(wb, wsTransactions, 'Transactions');
+
+      // Save file
+      XLSX.writeFile(wb, `Crypto-Tax-Report-${new Date().toISOString().split('T')[0]}.xlsx`);
+
+      toast({
+        title: "Excel Report Generated",
+        description: "Your tax report has been downloaded successfully.",
+      });
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "Failed to generate Excel report. Please try again.",
+        variant: "destructive",
+      });
+    }
+  };
+
   return (
     <Card className="shadow-card">
       <CardHeader>
@@ -113,14 +176,26 @@ export const ReportGenerator = ({ transactions, summary }: ReportGeneratorProps)
         </CardDescription>
       </CardHeader>
       <CardContent className="space-y-4">
-        <Button 
-          onClick={generatePDF} 
-          className="w-full"
-          size="lg"
-        >
-          <Download className="mr-2 h-5 w-5" />
-          Download PDF Report
-        </Button>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <Button 
+            onClick={generatePDF} 
+            className="w-full"
+            size="lg"
+          >
+            <FileText className="mr-2 h-5 w-5" />
+            Download PDF
+          </Button>
+
+          <Button 
+            onClick={generateExcel} 
+            className="w-full"
+            size="lg"
+            variant="secondary"
+          >
+            <FileSpreadsheet className="mr-2 h-5 w-5" />
+            Download Excel Sheet
+          </Button>
+        </div>
         
         <div className="rounded-md bg-muted p-4 text-sm">
           <p className="font-semibold mb-2">Report includes:</p>

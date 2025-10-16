@@ -5,17 +5,25 @@ import { TaxSummaryCard } from '@/components/TaxSummaryCard';
 import { TransactionTable } from '@/components/TransactionTable';
 import { TaxGuidance } from '@/components/TaxGuidance';
 import { ReportGenerator } from '@/components/ReportGenerator';
+import { DashboardCharts } from '@/components/DashboardCharts';
 import { CryptoTransaction } from '@/types/transaction';
 import { calculateTaxSummary } from '@/utils/taxCalculations';
 import { Separator } from '@/components/ui/separator';
+import { Button } from '@/components/ui/button';
+import { Calculator } from 'lucide-react';
 
 const Index = () => {
   const [transactions, setTransactions] = useState<CryptoTransaction[]>([]);
+  const [isCalculated, setIsCalculated] = useState(false);
 
   const handleTransactionsLoaded = (loadedTransactions: CryptoTransaction[]) => {
     setTransactions(loadedTransactions);
-    // Store in localStorage for persistence
+    setIsCalculated(false);
     localStorage.setItem('cryptoTransactions', JSON.stringify(loadedTransactions));
+  };
+
+  const handleCalculateTax = () => {
+    setIsCalculated(true);
   };
 
   const taxSummary = transactions.length > 0 ? calculateTaxSummary(transactions) : null;
@@ -26,12 +34,25 @@ const Index = () => {
       
       <main className="container mx-auto px-4 py-12 space-y-12">
         {/* Upload Section */}
-        <section id="upload">
+        <section id="upload" className="space-y-6">
           <FileUpload onTransactionsLoaded={handleTransactionsLoaded} />
+          
+          {transactions.length > 0 && !isCalculated && (
+            <div className="flex justify-center">
+              <Button 
+                onClick={handleCalculateTax}
+                size="lg"
+                className="shadow-elegant"
+              >
+                <Calculator className="mr-2 h-5 w-5" />
+                Calculate Tax Now
+              </Button>
+            </div>
+          )}
         </section>
 
         {/* Tax Summary Section */}
-        {taxSummary && (
+        {taxSummary && isCalculated && (
           <>
             <Separator className="my-12" />
             <section id="summary" className="space-y-6">
@@ -47,7 +68,7 @@ const Index = () => {
         )}
 
         {/* Transactions Table */}
-        {transactions.length > 0 && (
+        {transactions.length > 0 && isCalculated && (
           <>
             <Separator className="my-12" />
             <section id="transactions" className="space-y-6">
@@ -63,7 +84,7 @@ const Index = () => {
         )}
 
         {/* Report Generation */}
-        {taxSummary && (
+        {taxSummary && isCalculated && (
           <>
             <Separator className="my-12" />
             <section id="reports" className="space-y-6">
@@ -74,6 +95,22 @@ const Index = () => {
                 </p>
               </div>
               <ReportGenerator transactions={transactions} summary={taxSummary} />
+            </section>
+          </>
+        )}
+
+        {/* Transparency Dashboard */}
+        {taxSummary && isCalculated && (
+          <>
+            <Separator className="my-12" />
+            <section id="dashboard" className="space-y-6">
+              <div>
+                <h2 className="text-3xl font-bold mb-2">Transparency Dashboard</h2>
+                <p className="text-muted-foreground">
+                  Visual insights into your crypto portfolio and tax trends
+                </p>
+              </div>
+              <DashboardCharts transactions={transactions} summary={taxSummary} />
             </section>
           </>
         )}
