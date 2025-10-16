@@ -1,73 +1,160 @@
-# Welcome to your Lovable project
+# Indian Crypto Tax Calculator
 
-## Project info
+A comprehensive React web application designed to simplify cryptocurrency taxation compliance for Indian users based on Indian crypto tax laws.
 
-**URL**: https://lovable.dev/projects/4dc2582a-6013-46ee-9875-7d22d3ebf525
+## 🎯 Features
 
-## How can I edit this code?
+### Core Functionality
+- **Transaction Upload**: Support for CSV and Excel file uploads, plus manual entry
+- **Automated Tax Calculations**:
+  - 30% capital gains tax on net profits (Section 115BBH)
+  - 1% TDS tracking and credit (Section 194S)
+  - 18% GST calculation on platform fees
+- **Interactive Tax Guidance**: Step-by-step educational modules about Indian crypto tax laws
+- **Audit-Ready Reports**: Downloadable PDF reports formatted for Schedule VDA compliance
+- **Visual Dashboard**: Charts and analytics for transaction insights
+- **Secure Local Storage**: All data processed client-side using browser localStorage
 
-There are several ways of editing your application.
+### Tax Components Calculated
+1. **30% Tax on Gains**: Flat tax rate on net crypto profits
+2. **1% TDS Credit**: Track TDS already deducted by exchanges
+3. **18% GST**: Calculated on platform service fees
+4. **Net Tax Payable**: Final liability after all deductions
 
-**Use Lovable**
+## 🚀 Getting Started
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/4dc2582a-6013-46ee-9875-7d22d3ebf525) and start prompting.
+### Prerequisites
+- Node.js 16+ and npm installed
+- Modern web browser
 
-Changes made via Lovable will be committed automatically to this repo.
-
-**Use your preferred IDE**
-
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
-
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
-
-Follow these steps:
+### Installation
 
 ```sh
-# Step 1: Clone the repository using the project's Git URL.
+# Clone the repository
 git clone <YOUR_GIT_URL>
 
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
+# Navigate to project directory
+cd indian-crypto-tax-calculator
 
-# Step 3: Install the necessary dependencies.
-npm i
+# Install dependencies
+npm install
 
-# Step 4: Start the development server with auto-reloading and an instant preview.
+# Start development server
 npm run dev
 ```
 
-**Edit a file directly in GitHub**
+The app will be available at `http://localhost:8080`
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+## 📊 How to Use
 
-**Use GitHub Codespaces**
+1. **Upload Transactions**: 
+   - Click "Upload Transaction Data" 
+   - Upload CSV/Excel file or download the sample template
+   - Required columns: date, type, cryptocurrency, amount, pricePerUnit, totalValue, platformFee, tdsDeducted
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+2. **Review Tax Summary**:
+   - View comprehensive breakdown of gains, losses, and tax liability
+   - See TDS credits and GST calculations
+   - Check net tax payable amount
 
-## What technologies are used for this project?
+3. **Generate Reports**:
+   - Download PDF report formatted for Schedule VDA
+   - Use for Income Tax Return (ITR) filing
 
-This project is built with:
+4. **Learn About Crypto Tax**:
+   - Read interactive guidance on Indian crypto tax laws
+   - Understand 30% tax, TDS, and GST requirements
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
+## 🛠️ Technologies Used
 
-## How can I deploy this project?
+- **Frontend**: React 18 with TypeScript
+- **UI Framework**: shadcn-ui components
+- **Styling**: Tailwind CSS with custom design system
+- **Charts**: Recharts for data visualization
+- **File Parsing**: PapaParse (CSV), SheetJS (Excel)
+- **PDF Generation**: jsPDF
+- **Build Tool**: Vite
+- **State Management**: React hooks
 
-Simply open [Lovable](https://lovable.dev/projects/4dc2582a-6013-46ee-9875-7d22d3ebf525) and click on Share -> Publish.
+## 📁 Project Structure
 
-## Can I connect a custom domain to my Lovable project?
+```
+src/
+├── components/
+│   ├── Hero.tsx                 # Landing hero section
+│   ├── FileUpload.tsx          # File upload interface
+│   ├── TaxSummaryCard.tsx      # Tax breakdown display
+│   ├── TransactionTable.tsx    # Transaction history table
+│   ├── TaxGuidance.tsx         # Educational content
+│   ├── ReportGenerator.tsx     # PDF report generation
+│   └── ui/                     # shadcn-ui components
+├── types/
+│   └── transaction.ts          # TypeScript interfaces
+├── utils/
+│   ├── taxCalculations.ts      # Tax computation logic
+│   └── fileParser.ts           # CSV/Excel parsing
+├── pages/
+│   └── Index.tsx               # Main application page
+└── index.css                   # Design system & tokens
+```
 
-Yes, you can!
+## 🎨 Design System
 
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
+The app uses a professional fintech design system with:
+- **Primary Color**: Deep blue (#0A2351) - Trust and finance
+- **Secondary Color**: Vibrant green (#22C55E) - Growth and profits  
+- **Accent Color**: Saffron (#FF9933) - Indian market identity
+- **Semantic Tokens**: All colors, gradients, and styles defined in design system
+- **Responsive Design**: Mobile-first approach
 
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/features/custom-domain#custom-domain)
+## 🔒 Security & Privacy
+
+- **Client-Side Processing**: All calculations performed in browser
+- **No Backend**: No data sent to external servers
+- **Local Storage**: Transactions stored in browser localStorage
+- **Data Privacy**: Users maintain complete control of their data
+
+## ⚖️ Legal Compliance
+
+This application is designed based on:
+- Finance Act 2022
+- Section 115BBH (30% tax on VDA gains)
+- Section 194S (1% TDS on crypto transactions)
+- Schedule VDA reporting requirements
+
+**Disclaimer**: This tool is for educational and informational purposes only. Tax calculations are estimates. Users should consult a qualified Chartered Accountant for personalized tax advice.
+
+## 📝 Sample Data Format
+
+CSV/Excel files should include these columns:
+```
+date,type,cryptocurrency,amount,pricePerUnit,totalValue,platformFee,tdsDeducted,exchange
+2024-01-15,BUY,BTC,0.5,4200000,2100000,2100,0,WazirX
+2024-03-05,SELL,BTC,0.3,4500000,1350000,1350,13500,WazirX
+```
+
+Download the sample template from the app for reference.
+
+## 🚀 Deployment
+
+Deploy via [Lovable](https://lovable.dev/projects/4dc2582a-6013-46ee-9875-7d22d3ebf525):
+- Click Share → Publish
+- Optional: Connect custom domain in Project Settings
+
+## 🤝 Contributing
+
+Contributions welcome! This is an open-source educational project.
+
+## 📄 License
+
+This project is provided as-is for educational purposes.
+
+## 🔗 Resources
+
+- [Indian Income Tax Act](https://incometaxindia.gov.in/)
+- [Finance Act 2022](https://www.incometax.gov.in/iec/foportal/)
+- [Crypto Tax Guidelines](https://www.incometax.gov.in/)
+
+---
+
+Built with ❤️ for Indian crypto taxpayers
