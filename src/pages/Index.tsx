@@ -6,6 +6,8 @@ import { TransactionTable } from '@/components/TransactionTable';
 import { TaxGuidance } from '@/components/TaxGuidance';
 import { ReportGenerator } from '@/components/ReportGenerator';
 import { DashboardCharts } from '@/components/DashboardCharts';
+import { PublicTaxInsights } from '@/components/PublicTaxInsights';
+import { PortfolioTracker } from '@/components/PortfolioTracker';
 import { CryptoTransaction } from '@/types/transaction';
 import { calculateTaxSummary } from '@/utils/taxCalculations';
 import { Separator } from '@/components/ui/separator';
@@ -56,6 +58,18 @@ const Index = () => {
               <ReportGenerator transactions={transactions} summary={taxSummary} />
             </div>
           )}
+        </section>
+
+        {/* Public Tax Insights - Always visible */}
+        <Separator className="my-12" />
+        <section id="public-insights" className="space-y-6">
+          <PublicTaxInsights />
+        </section>
+
+        {/* Portfolio Tracker - Always visible */}
+        <Separator className="my-12" />
+        <section id="portfolio-tracker" className="space-y-6">
+          <PortfolioTracker />
         </section>
 
         {/* Tax Summary Section */}
