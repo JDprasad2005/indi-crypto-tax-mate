@@ -8,49 +8,51 @@ All colors MUST be HSL.
 
 @layer base {
   :root {
-    /* Modern dark navy theme inspired by screenshots */
-    --background: 220 28% 10%;
+    /* Ultra-dark navy background matching screenshots */
+    --background: 220 30% 7%;
     --foreground: 210 40% 98%;
 
-    --card: 220 26% 14%;
+    --card: 220 28% 12%;
     --card-foreground: 210 40% 98%;
 
-    --popover: 220 26% 14%;
+    --popover: 220 28% 12%;
     --popover-foreground: 210 40% 98%;
 
-    /* Vibrant cyan accent for CTAs */
-    --primary: 190 80% 55%;
-    --primary-foreground: 220 28% 10%;
-    --primary-light: 190 80% 65%;
+    /* Vibrant cyan for primary actions */
+    --primary: 185 84% 55%;
+    --primary-foreground: 220 30% 7%;
+    --primary-light: 185 84% 65%;
 
-    /* Secondary green for success states */
+    /* Keep secondary green */
     --secondary: 142 71% 50%;
-    --secondary-foreground: 220 28% 10%;
+    --secondary-foreground: 220 30% 7%;
 
-    --muted: 220 26% 18%;
+    --muted: 220 26% 15%;
     --muted-foreground: 215 20% 65%;
 
     /* Bright cyan accent */
-    --accent: 190 80% 55%;
-    --accent-foreground: 220 28% 10%;
+    --accent: 185 84% 55%;
+    --accent-foreground: 220 30% 7%;
 
     --destructive: 0 84% 60%;
     --destructive-foreground: 210 40% 98%;
 
-    --border: 220 26% 18%;
-    --input: 220 26% 18%;
-    --ring: 190 80% 55%;
+    --border: 220 26% 20%;
+    --input: 220 26% 15%;
+    --ring: 185 84% 55%;
 
     --radius: 0.75rem;
 
-    /* Modern gradients with cyan accents */
-    --gradient-primary: linear-gradient(135deg, hsl(190 80% 55%) 0%, hsl(200 90% 60%) 100%);
+    /* Vibrant gradients with cyan */
+    --gradient-primary: linear-gradient(135deg, hsl(185 84% 55%) 0%, hsl(200 90% 65%) 100%);
     --gradient-success: linear-gradient(135deg, hsl(142 71% 50%) 0%, hsl(142 71% 60%) 100%);
-    --gradient-hero: linear-gradient(135deg, hsl(220 28% 10%) 0%, hsl(220 40% 18%) 50%, hsl(220 28% 10%) 100%);
+    --gradient-hero: linear-gradient(135deg, hsl(220 30% 7%) 0%, hsl(220 35% 12%) 50%, hsl(220 30% 7%) 100%);
+    --gradient-card: linear-gradient(135deg, hsl(220 28% 12% / 0.6) 0%, hsl(220 28% 14% / 0.4) 100%);
     
-    /* Elevated shadows with cyan glow */
-    --shadow-card: 0 4px 6px -1px hsl(220 28% 5% / 0.3), 0 2px 4px -1px hsl(220 28% 5% / 0.2);
-    --shadow-elevated: 0 10px 15px -3px hsl(220 28% 5% / 0.4), 0 4px 6px -2px hsl(190 80% 55% / 0.1);
+    /* Glowing shadows with cyan */
+    --shadow-card: 0 4px 20px hsl(220 30% 3% / 0.5), 0 0 40px hsl(185 84% 55% / 0.05);
+    --shadow-elevated: 0 10px 30px hsl(220 30% 3% / 0.6), 0 0 60px hsl(185 84% 55% / 0.1);
+    --shadow-glow-cyan: 0 0 20px hsl(185 84% 55% / 0.3), 0 0 40px hsl(185 84% 55% / 0.15);
     
     /* Transitions */
     --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
@@ -84,6 +86,10 @@ All colors MUST be HSL.
   .gradient-hero {
     background: var(--gradient-hero);
   }
+  
+  .gradient-card {
+    background: var(--gradient-card);
+  }
 
   .shadow-card {
     box-shadow: var(--shadow-card);
@@ -92,8 +98,20 @@ All colors MUST be HSL.
   .shadow-elevated {
     box-shadow: var(--shadow-elevated);
   }
+  
+  .shadow-glow-cyan {
+    box-shadow: var(--shadow-glow-cyan);
+  }
 
   .transition-smooth {
     transition: var(--transition-smooth);
+  }
+  
+  /* Glassmorphic card effect */
+  .glass-card {
+    background: linear-gradient(135deg, hsl(220 28% 12% / 0.6) 0%, hsl(220 28% 14% / 0.4) 100%);
+    backdrop-filter: blur(10px);
+    border: 1px solid hsl(220 26% 20% / 0.5);
+    box-shadow: 0 8px 32px hsl(220 30% 3% / 0.4), 0 0 40px hsl(185 84% 55% / 0.08);
   }
 }
