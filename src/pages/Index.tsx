@@ -49,6 +49,13 @@ const Index = () => {
               </Button>
             </div>
           )}
+
+          {/* Report Download Buttons - Show immediately after calculation */}
+          {taxSummary && isCalculated && (
+            <div className="mt-6">
+              <ReportGenerator transactions={transactions} summary={taxSummary} />
+            </div>
+          )}
         </section>
 
         {/* Tax Summary Section */}
@@ -83,21 +90,6 @@ const Index = () => {
           </>
         )}
 
-        {/* Report Generation */}
-        {taxSummary && isCalculated && (
-          <>
-            <Separator className="my-12" />
-            <section id="reports" className="space-y-6">
-              <div>
-                <h2 className="text-3xl font-bold mb-2">Download Reports</h2>
-                <p className="text-muted-foreground">
-                  Generate audit-ready reports for Income Tax filing
-                </p>
-              </div>
-              <ReportGenerator transactions={transactions} summary={taxSummary} />
-            </section>
-          </>
-        )}
 
         {/* Transparency Dashboard */}
         {taxSummary && isCalculated && (
