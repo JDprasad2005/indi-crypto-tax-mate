@@ -12,13 +12,15 @@ import { CryptoTransaction } from '@/types/transaction';
 import { calculateTaxSummary } from '@/utils/taxCalculations';
 import { Separator } from '@/components/ui/separator';
 import { Button } from '@/components/ui/button';
-import { Calculator } from 'lucide-react';
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
+import { Calculator, Download, FileSpreadsheet, FileText } from 'lucide-react';
 
 const Index = () => {
   const [transactions, setTransactions] = useState<CryptoTransaction[]>([]);
   const [isCalculated, setIsCalculated] = useState(false);
 
   const handleTransactionsLoaded = (loadedTransactions: CryptoTransaction[]) => {
+    console.log('Transactions loaded:', loadedTransactions.length);
     setTransactions(loadedTransactions);
     setIsCalculated(false);
     localStorage.setItem('cryptoTransactions', JSON.stringify(loadedTransactions));
@@ -28,10 +30,28 @@ const Index = () => {
     setIsCalculated(true);
   };
 
+  const handleDownloadExcel = () => {
+    // Calculate tax first if not already calculated
+    if (!isCalculated) {
+      setIsCalculated(true);
+    }
+    // TODO: Implement Excel download functionality
+    console.log('Download Excel');
+  };
+
+  const handleDownloadPDF = () => {
+    // Calculate tax first if not already calculated
+    if (!isCalculated) {
+      setIsCalculated(true);
+    }
+    // TODO: Implement PDF download functionality
+    console.log('Download PDF');
+  };
+
   const taxSummary = transactions.length > 0 ? calculateTaxSummary(transactions) : null;
 
   return (
-    <div className="min-h-screen">
+    <div>
       <Hero />
       
       <main className="container mx-auto px-4 py-12 space-y-12">
@@ -39,16 +59,61 @@ const Index = () => {
         <section id="upload" className="space-y-6">
           <FileUpload onTransactionsLoaded={handleTransactionsLoaded} />
           
-          {transactions.length > 0 && !isCalculated && (
+          {/* Debug info */}
+          <div className="text-center text-sm text-muted-foreground">
+            Transactions loaded: {transactions.length}
+          </div>
+          
+          {/* Temporary: Always show button for testing */}
+          <div className="flex justify-center">
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button 
+                  size="lg"
+                  className="shadow-glow-cyan transition-smooth"
+                >
+                  <Calculator className="mr-2 h-5 w-5" />
+                  Calculate Tax Now
+                  <Download className="ml-2 h-4 w-4" />
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="center" className="w-56">
+                <DropdownMenuItem onClick={handleDownloadExcel} className="cursor-pointer">
+                  <FileSpreadsheet className="mr-2 h-4 w-4" />
+                  Download Excel
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={handleDownloadPDF} className="cursor-pointer">
+                  <FileText className="mr-2 h-4 w-4" />
+                  Download PDF
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          </div>
+          
+          {transactions.length > 0 && (
             <div className="flex justify-center">
-              <Button 
-                onClick={handleCalculateTax}
-                size="lg"
-                className="shadow-elegant"
-              >
-                <Calculator className="mr-2 h-5 w-5" />
-                Calculate Tax Now
-              </Button>
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button 
+                    size="lg"
+                    className="shadow-glow-cyan transition-smooth"
+                  >
+                    <Calculator className="mr-2 h-5 w-5" />
+                    Calculate Tax Now
+                    <Download className="ml-2 h-4 w-4" />
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="center" className="w-56">
+                  <DropdownMenuItem onClick={handleDownloadExcel} className="cursor-pointer">
+                    <FileSpreadsheet className="mr-2 h-4 w-4" />
+                    Download Excel
+                  </DropdownMenuItem>
+                  <DropdownMenuItem onClick={handleDownloadPDF} className="cursor-pointer">
+                    <FileText className="mr-2 h-4 w-4" />
+                    Download PDF
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
             </div>
           )}
 

@@ -26,13 +26,6 @@ export const Hero = () => {
           <div className="flex flex-col justify-center gap-4 sm:flex-row">
             <Button 
               size="lg" 
-              className="shadow-glow-cyan hover:shadow-elevated transition-smooth"
-            >
-              <Calculator className="mr-2 h-5 w-5" />
-              Calculate Tax Now
-            </Button>
-            <Button 
-              size="lg" 
               variant="outline"
               className="border-border hover:bg-muted transition-smooth"
             >
